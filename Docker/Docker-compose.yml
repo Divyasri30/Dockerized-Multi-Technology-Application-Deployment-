@@ -1,0 +1,54 @@
+version: '3.9'
+
+services:
+
+java-spc:
+     image: java:1.0
+     build:
+        context: C:\Users\USER\Documents\Docker\java_Dockerfile
+        dockerfile: Multi_Dockerfile
+
+  
+networks:
+   spcnetwork:
+        driver: bridge
+        ports:
+           -8080
+
+Dotnet-nop :
+      image: Dot:1.1
+      build:
+         context: C:\Users\USER\Documents\Docker\Dotnet_Dockerfile 
+         dockerfile: Dockerfile
+         networks:
+               spcnetwork:
+                    driver: none 
+                    ports: 
+                          -5000
+
+Node-nginx :
+      image: node:1.2
+      build:
+         context: C:\Users\USER\Documents\Docker\Nodejs_Dockerfile 
+         dockerfile: Dockerfile
+         networks:
+            spcnetwork:
+                driver: host
+                ports:
+                    -80
+
+python-app :
+      image: python:1.3
+      build:
+         context: C:\Users\USER\Documents\Docker\python_Dockerfile
+         dockerfile: Dockerfile
+         networks:
+             spcnetwork:
+                 driver: bridge
+             ports:
+               -5001
+                     
+
+
+
+

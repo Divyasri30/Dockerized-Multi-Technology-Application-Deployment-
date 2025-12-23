@@ -1,0 +1,23 @@
+FROM maven:3.9.11-eclipse-temurin-25-noble AS build
+WORKDIR /app
+ADD . /app
+RUN mvn package
+
+FROM eclipse-temurin:25.0.1_8-jdk-noble AS runtime
+LABEL java_project=springpetclinic
+LABEL author=devopsteam
+LABEL env=prod
+
+ARG username=java
+
+ENV JAVA_HOME=/usr/lib/jvm/openjdk-25-jdk-amd64/bin
+ENV MAVEN_HOME=/usr/share/maven
+
+RUN useradd -m -d /home/${username} -s /bin/bash ${username}
+USER ${username}
+
+WORKDIR /home/java/my-dir
+
+COPY --from=build /app/target/*.jar Divyasri.jar
+EXPOSE 8080
+CMD ["java","-jar","Divyasri.jar"]
